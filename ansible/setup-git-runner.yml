@@ -1,0 +1,70 @@
+---
+- name: Setup GitHub Runner on Git-Runner Instance
+  hosts: git-runner
+  become: yes
+  vars:
+    github_runner_url: "https://github.com/Konami33/Git-runner-using-ansible"
+    github_runner_token: "AQGGSGSY6VJOL7LIJGM5LNLGRWXKS"
+    runner_name: "Git-Runner"
+  tasks:
+    - name: Update the system
+      apt:
+        update_cache: yes
+        upgrade: dist
+
+    - name: Install required packages
+      apt:
+        name:
+          - git
+          - curl
+        state: present
+
+    - name: Create directory for GitHub runner
+      file:
+        path: /home/ubuntu/actions-runner
+        state: directory
+        owner: ubuntu
+        group: ubuntu
+        mode: '0755'
+
+    - name: Download GitHub Actions runner using curl
+      command: curl -o actions-runner-linux-x64-2.317.0.tar.gz -L https://github.com/actions/runner/releases/download/v2.317.0/actions-runner-linux-x64-2.317.0.tar.gz
+      args:
+        chdir: /home/ubuntu/actions-runner/
+
+    - name: Extract GitHub Actions runner
+      unarchive:
+        src: /home/ubuntu/actions-runner/actions-runner-linux-x64-2.317.0.tar.gz
+        dest: /home/ubuntu/actions-runner/
+        remote_src: yes
+
+    - name: Ensure actions-runner directory has correct permissions
+      file:
+        path: /home/ubuntu/actions-runner
+        state: directory
+        owner: ubuntu
+        group: ubuntu
+        recurse: yes
+        mode: '0755'
+
+    - name: Check if GitHub Actions runner is already configured
+      command: ./config.sh remove --unattended
+      args:
+        chdir: /home/ubuntu/actions-runner/
+      register: runner_removed
+      become_user: ubuntu
+      ignore_errors: true
+
+    - name: Configure GitHub Actions runner if not already configured
+      command: ./config.sh --url {{ github_runner_url }} --token {{ github_runner_token }} --name "{{ runner_name }}" --unattended
+      args:
+        chdir: /home/ubuntu/actions-runner/
+      environment:
+        RUNNER_ALLOW_RUNASROOT: "1"
+      become_user: ubuntu
+      when: runner_removed is failed
+
+    - name: Start GitHub Runner service
+      command:
+        cmd: ./run.sh start
+        chdir: /home/ubuntu/actions-runner
