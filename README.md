@@ -3,7 +3,7 @@
 Automating the setup of GitHub runners on a public EC2 instance using Ansible allows for streamlined deployment and management of continuous integration (CI) and continuous deployment (CD) processes. 
 This documentation provides a step-by-step guide on how to set-up the process of automating the setup of a GitHub runner on a public EC2 instance using `Ansible`.
 
-![alt text](./images/image-7.png)
+![alt text](https://github.com/Konami33/Git-runner-using-ansible/raw/main/images/image-7.png)
 
 ## Steps
 
@@ -19,7 +19,7 @@ This documentation provides a step-by-step guide on how to set-up the process of
 
 Here, is the resource map:
 
-![alt text](./images/image-4.png)
+![alt text](https://github.com/Konami33/Git-runner-using-ansible/raw/main/images/image-4.png)
 
 ### Step 2: Launce a public EC2 instance
 
@@ -31,7 +31,7 @@ Here, is the resource map:
 4. Add a security group named `git-runner` with inbound rules:
     - SSH from anywhere or from your IP.
 
-![alt text](./images/image-5.png)
+![alt text](https://github.com/Konami33/Git-runner-using-ansible/raw/main/images/image-5.png)
 
 
 ### Step 3: Create a github repository and connect it with VS-Code(Optional if you want to use your local machine. Make sure your machine runs on ubuntu)
@@ -43,9 +43,9 @@ Here, is the resource map:
     ```sh
     ssh-keygen -t ed25519 -C "your_email@example"
     ```
-    ![alt text](./images/image-6.png)
+    ![alt text](https://github.com/Konami33/Git-runner-using-ansible/raw/main/images/image-6.png)
     - Create a new SSH key in the your github and fill it with the newly created public key.
-    ![alt text](./images/image.png)
+    ![alt text](https://github.com/Konami33/Git-runner-using-ansible/raw/main/images/image.png)
     - Run the command `ssh -T git@github.com` to test the connection.
     - Clone the repository using SSH command.
 3. Change directory to your Git-repository directory.
@@ -64,6 +64,7 @@ Here, is the resource map:
     ```sh
     ansible --version
     ```
+    ![](https://github.com/Konami33/Git-runner-using-ansible/raw/main/images/image-8.png)
 
 ### Step 5: Create or use the previously generated key pair for remote ssh into the Git-runner Public instance
 - Copy the public key
@@ -71,7 +72,7 @@ Here, is the resource map:
 - Paste the public key to the `known_hosts`
 - Now you can ssh it from your local machine or vs-code terminal.
 
-![alt text](./images/image-1.png)
+![alt text](https://github.com/Konami33/Git-runner-using-ansible/raw/main/images/image-1.png)
 
 ### Step 6: Configure Ansible Playbooks for Git-runner setup
 
@@ -196,10 +197,10 @@ git-runner                 : ok=8    changed=7    unreachable=0    failed=0    s
     sudo ./svc.sh status
     ```
     If the output is like this, then you have successfully installed the GitHub Runner on your server.
-    ![alt text](./images/image-2.png)
+    ![alt text](https://github.com/Konami33/Git-runner-using-ansible/raw/main/images/image-2.png)
 
 6. You can also check the runner from your github repostory.
-    ![alt text](./images/image-3.png)
+    ![alt text](https://github.com/Konami33/Git-runner-using-ansible/raw/main/images/image-3.png)
 
 ---
 
