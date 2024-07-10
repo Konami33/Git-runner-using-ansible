@@ -7,7 +7,7 @@ This documentation provides a step-by-step guide on how to set-up the process of
 
 ## Steps
 
-### Step 1: Configure and setup AWS(vpc, subnet, route-table, Internet gateway, NAT gateway)
+### Step 1: Configure and setup AWS(vpc, subnet, route-table, Internet gateway)
 
 1. Create a vpc named `my-vpc` with IPv4 CIDR block `10.0.0.0/16`
 2. Create a public subnet named `public-subnet` with IPv4 CIDR block `10.0.1.0/24`
